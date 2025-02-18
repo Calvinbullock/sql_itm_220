@@ -172,19 +172,25 @@ WHERE  i.store_id = 2;
 -- --------------------------------------------------------------------------
 -- 1. Retrieve all data from a table named category.
 -- --------------------------------------------------------------------------
-
+SELECT *
+FROM category;
 
 -- --------------------------------------------------------------------------
 -- 2. Retrieve all columns from a table named actor. 
 --    Filter those employees by the last name of 'Smith'.
 -- --------------------------------------------------------------------------
-
+SELECT *
+FROM actor
+WHERE last_name = 'Smith';
 
 -- --------------------------------------------------------------------------
 -- 3. Retrieve the title and release year from the film table.
 --    We want all films where the rating is PG-13.
 -- --------------------------------------------------------------------------
-
+SELECT title
+, release_year
+FROM film
+WHERE rating = 'PG-13';
 
 -- --------------------------------------------------------------------------
 -- 4. Find the first 10 unique film titles of our Adventure films that exist
@@ -192,7 +198,9 @@ WHERE  i.store_id = 2;
 --    Columns will look like the following:
 --    | Film Title | 
 -- --------------------------------------------------------------------------
-
+SELECT title
+FROM film
+WHERE 
 
 -- --------------------------------------------------------------------------
 -- 5. We would like to know the actors of films that were released
