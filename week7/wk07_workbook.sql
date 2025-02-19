@@ -181,7 +181,7 @@ FROM category;
 -- --------------------------------------------------------------------------
 SELECT *
 FROM actor
-WHERE last_name = 'Smith';
+WHERE last_name = 'Silverstone';
 
 -- --------------------------------------------------------------------------
 -- 3. Retrieve the title and release year from the film table.
@@ -198,9 +198,14 @@ WHERE rating = 'PG-13';
 --    Columns will look like the following:
 --    | Film Title | 
 -- --------------------------------------------------------------------------
-SELECT title
-FROM film
-WHERE 
+SELECT f.title
+FROM film AS f
+JOIN film_category AS fc ON fc.film_id = f.film_id
+JOIN category AS c ON c.category_id = fc.category_id
+JOIN inventory AS i ON i.film_id = f.film_id
+WHERE c.name = 'Action' AND i.store_id = 1
+ORDER BY f.title 
+LIMIT 10;
 
 -- --------------------------------------------------------------------------
 -- 5. We would like to know the actors of films that were released
@@ -209,3 +214,7 @@ WHERE
 --    Columns will look like the following:
 --    | Actor ID | First Name | Last Name |
 -- --------------------------------------------------------------------------
+SELECT a.actor_id
+,	f_name
+, 	l_name
+FROM 
