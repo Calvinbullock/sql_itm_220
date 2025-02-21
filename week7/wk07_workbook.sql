@@ -7,7 +7,7 @@
     SELECT     column_name AS 'Alias1'
     ,          column_name_2 AS 'Alias2'
     FROM       table1 t1   -- t1 and t2 are table aliases
-    INNER JOIN table2 t2   
+    INNER JOIN table2 t2
     ON         t1.table1_id = t2.table1_id -- PK and FK might not always be the same name
     WHERE      column_name = condition
     ORDER BY   column_name (DESC)
@@ -18,8 +18,8 @@
 
 USE sakila;
 -- ------------------------------------------------------------------------
--- 1. Write the SQL statement that retrieves the 
--- actor ID, first name, and last name for all actors. 
+-- 1. Write the SQL statement that retrieves the
+-- actor ID, first name, and last name for all actors.
 -- Sort results by last name and then by first name.
 -- ------------------------------------------------------------------------
 SELECT a.actor_id
@@ -29,8 +29,8 @@ FROM   actor a
 ORDER BY a.last_name, a.first_name;
 
 -- ------------------------------------------------------------------------
--- 2. Write the SQL statement that retrieves the 
--- actor ID, first name, and last name for all actors 
+-- 2. Write the SQL statement that retrieves the
+-- actor ID, first name, and last name for all actors
 -- whose last name equals 'WILLIAMS' or 'DAVIS'.
 -- ------------------------------------------------------------------------
 SELECT a.actor_id
@@ -41,9 +41,9 @@ WHERE  a.last_name IN ('WILLIAMS', 'DAVIS');
 
 -- ------------------------------------------------------------------------
 -- 3. Write a query against the rental table that returns
--- the IDs of the customers who rented a film on July 5, 2005 
--- (use the rental.rental_date column, and you can use the date() function 
--- to ignore the time component). 
+-- the IDs of the customers who rented a film on July 5, 2005
+-- (use the rental.rental_date column, and you can use the date() function
+-- to ignore the time component).
 -- Include a single row for each distinct customer ID.
 -- ------------------------------------------------------------------------
 SELECT DISTINCT r.customer_id
@@ -88,8 +88,8 @@ WHERE  DATE(r.rental_date) = '2005-06-14'
 ORDER BY r.return_date DESC;
 
 -- ------------------------------------------------------------------------
--- 5. Write the SQL statement that retrieves the unique 
--- actor last name values for all actors. 
+-- 5. Write the SQL statement that retrieves the unique
+-- actor last name values for all actors.
 -- Sort results by last name.
 -- ------------------------------------------------------------------------
 SELECT DISTINCT a.last_name
@@ -137,7 +137,7 @@ WHERE  p.customer_id <> 5
 AND    (p.amount > 8 OR DATE(p.payment_date) = '2005-08-23');
 
 -- --------------------------------------------------------------------------
--- 7. Construct a query that retrieves all rows from the payments table 
+-- 7. Construct a query that retrieves all rows from the payments table
 -- where the amount is either 1.98, 7.98, or 9.98.
 -- --------------------------------------------------------------------------
 SELECT p.payment_id
@@ -148,7 +148,7 @@ FROM   payment p
 WHERE  p.amount IN (1.98, 7.98, 9.98);
 
 -- --------------------------------------------------------------------------
--- 8. Construct a query that finds all customers whose last name contains 
+-- 8. Construct a query that finds all customers whose last name contains
 -- an A in the second position and a W anywhere after the A.
 -- --------------------------------------------------------------------------
 SELECT c.first_name
@@ -176,7 +176,7 @@ SELECT *
 FROM category;
 
 -- --------------------------------------------------------------------------
--- 2. Retrieve all columns from a table named actor. 
+-- 2. Retrieve all columns from a table named actor.
 --    Filter those employees by the last name of 'Smith'.
 -- --------------------------------------------------------------------------
 SELECT *
@@ -194,9 +194,9 @@ WHERE rating = 'PG-13';
 
 -- --------------------------------------------------------------------------
 -- 4. Find the first 10 unique film titles of our Adventure films that exist
---    in the inventory of store 1.  
+--    in the inventory of store 1.
 --    Columns will look like the following:
---    | Film Title | 
+--    | Film Title |
 -- --------------------------------------------------------------------------
 SELECT f.title
 FROM film AS f
@@ -204,7 +204,7 @@ JOIN film_category AS fc ON fc.film_id = f.film_id
 JOIN category AS c ON c.category_id = fc.category_id
 JOIN inventory AS i ON i.film_id = f.film_id
 WHERE c.name = 'Action' AND i.store_id = 1
-ORDER BY f.title 
+ORDER BY f.title
 LIMIT 10;
 
 -- --------------------------------------------------------------------------
@@ -217,4 +217,9 @@ LIMIT 10;
 SELECT a.actor_id
 ,	f_name
 , 	l_name
-FROM 
+FROM actor AS a
+JOIN film_actor AS fa ON a.actor_id = fa.actor_id
+JOIN film AS f ON f.film_id = fa.film_id
+WHERE f.release_year BETWEEN 2000 AND 2005
+AND a.last_name LIKE 'A%' OR a.last_name LIKE 'B%'
+ORDER BY a.actor_id;
