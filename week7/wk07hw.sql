@@ -13,8 +13,9 @@ USE airportdb;
 --    Columns will look like the following:
 --    | Last Name |
 -- --------------------------------------------------------------------------
-
-
+select distinct lastname as 'last name'
+from employee
+order by lastname;
 
 -- --------------------------------------------------------------------------
 -- 2. What are the airlines and which airports are they based in?
@@ -22,7 +23,11 @@ USE airportdb;
 --    Columns will look like the following:
 --    | Airline | Airport |
 -- --------------------------------------------------------------------------
-
+select al.airlinename as 'Airline'
+, 	ap.name as 'Airport'
+from airport ap
+join airline al on al.base_airport = ap.airport_id
+order by al.airline;
 
 -- --------------------------------------------------------------------------
 -- 3. What are the first 20 airports that are based in the United States?
