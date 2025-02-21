@@ -1,8 +1,8 @@
 -- Background:
--- You have been hired by BYU-I Air to help sort through the airportdb database. 
--- Each week you will receive a file from your manager with questions that 
--- need answered by writing queries against the database. 
--- This week your manager wants you to get familiar with the database. 
+-- You have been hired by BYU-I Air to help sort through the airportdb database.
+-- Each week you will receive a file from your manager with questions that
+-- need answered by writing queries against the database.
+-- This week your manager wants you to get familiar with the database.
 
 -- Week 7 questions
 USE airportdb;
@@ -13,6 +13,7 @@ USE airportdb;
 --    Columns will look like the following:
 --    | Last Name |
 -- --------------------------------------------------------------------------
+
 
 
 -- --------------------------------------------------------------------------
@@ -59,7 +60,7 @@ USE airportdb;
 -- ------------------------------------------------------------------------------------------
 -- 7. Marilyn is trying to schedule a flight that departs sometime between
 --    3PM and 4PM and arrives between 6PM and 7PM on Wednesday or Thursday.
---    She also wants to avoid flights that are operated by Cyprus Airlines. 
+--    She also wants to avoid flights that are operated by Cyprus Airlines.
 --    Can you help her?
 --    Sort the results by departure time.
 --    List the following columns:
