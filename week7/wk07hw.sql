@@ -27,7 +27,7 @@ select al.airlinename as 'Airline'
 , 	ap.name as 'Airport'
 from airport ap
 join airline al on al.base_airport = ap.airport_id
-order by al.airline;
+order by Airline;
 
 -- --------------------------------------------------------------------------
 -- 3. What are the first 20 airports that are based in the United States?
@@ -35,7 +35,12 @@ order by al.airline;
 --    Columns will look like the following:
 --    | Airport | Country |
 -- --------------------------------------------------------------------------
-
+select ag.country as Country,
+a.name as Airpot
+from airport a
+join airport_geo ag on ag.name = a.name
+where ag.country = 'United States'
+limit 20;
 
 -- --------------------------------------------------------------------------
 -- 4. What are the top 10 airports without an IATA code?
@@ -43,7 +48,12 @@ order by al.airline;
 --    Columns will look like the following:
 --    | Airport | IATA | ICAO |
 -- --------------------------------------------------------------------------
-
+select a.name as Airport,
+	IATA,
+    ICAO
+from airport a
+where IATA is NULL
+limit 10;
 
 -- --------------------------------------------------------------------------
 -- 5. What are the flights that depart between 10:00 and 10:15 on Monday?
@@ -60,7 +70,17 @@ order by al.airline;
 --    List the following columns:
 --    | Flight Number | Departure Time | Arrival Time | Airline | Monday |
 -- --------------------------------------------------------------------------
-
+select f.flightno as 'Flight Number',
+	fs.departure as 'Departure Time',
+    fs.arrival as 'Arrival Time',
+    a.airlinename as 'Airline',
+    fs.monday as 'Monday'
+from flightschedule fs
+join flight f on fs.flightno = f.flightno
+join airline a on a.airline_id = f.airline_id
+where fs.monday = 0 and Time(fs.departure) 
+	between '20:00' and '20:15'
+order by fs.departure;
 
 -- ------------------------------------------------------------------------------------------
 -- 7. Marilyn is trying to schedule a flight that departs sometime between
