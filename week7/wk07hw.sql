@@ -61,7 +61,7 @@ limit 10;
 --    List the following columns:
 --    | Flight Number | Departure Time | Arrival Time | Airline | Monday |
 -- --------------------------------------------------------------------------
-select fs.flightno as 'Flight Number', 
+select fs.flightno as 'Flight Number',
 	fs.departure as 'Departure Time',
     fs.arrival as 'Arrival Time',
     a.airlinename as 'Airline',
@@ -69,8 +69,8 @@ select fs.flightno as 'Flight Number',
 from flight f
 join flightschedule fs on f.flightno = fs.flightno
 join airline a on f.airline_id = a.airline_id
-where fs.monday = 1 and 
-	time(fs.departure) between '10:00' and '10:15'
+where fs.monday = 1
+    and time(fs.departure) between '10:00' and '10:15'
 order by fs.departure;
 
 -- --------------------------------------------------------------------------
@@ -88,8 +88,9 @@ select f.flightno as 'Flight Number',
 from flightschedule fs
 join flight f on fs.flightno = f.flightno
 join airline a on a.airline_id = f.airline_id
-where fs.monday = 0 and Time(fs.departure)
-	between '20:00' and '20:15'
+where fs.monday = 0
+    and time(fs.departure) between '20:00'
+    and '20:15'
 order by fs.departure;
 
 -- ------------------------------------------------------------------------------------------
@@ -110,8 +111,8 @@ select fs.flightno as 'Flight Number',
 from flight f
 join flightschedule as fs on f.flightno = fs.flightno
 join airline a on f.airline_id = a.airline_id
-where (TIME(fs.departure) between '15:00' and '16:00') 
-	and (TIME(fs.arrival) between '18:00' and '21:00') 
-    and (fs.wednesday = 1 or fs.thursday = 1) 
+where (time(fs.departure) between '15:00' and '16:00')
+	and (time(fs.arrival) between '18:00' and '21:00')
+    and (fs.wednesday = 1 or fs.thursday = 1)
     and (a.airlinename != 'Cyprus Airlines')
 order by fs.departure;
