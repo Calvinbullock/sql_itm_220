@@ -61,18 +61,17 @@ limit 10;
 --    List the following columns:
 --    | Flight Number | Departure Time | Arrival Time | Airline | Monday |
 -- --------------------------------------------------------------------------
-SELECT fs.flightno AS 'Flight Number'
-, fs.departure AS 'Departure Time'
-, fs.arrival AS 'Arrival Time'
-, a.airlinename AS 'Airline'
-, fs.monday AS 'Monday'
-FROM flight AS f
-JOIN flightschedule AS fs
-	ON f.flightno = fs.flightno
-JOIN airline AS a
-	ON f.airline_id = a.airline_id
-WHERE fs.monday = 1 AND TIME(fs.departure) Between '10:00' AND '10:15'
-ORDER BY fs.departure;
+select fs.flightno as 'Flight Number', 
+	fs.departure as 'Departure Time',
+    fs.arrival as 'Arrival Time',
+    a.airlinename as 'Airline',
+    fs.monday as 'Monday'
+from flight f
+join flightschedule fs on f.flightno = fs.flightno
+join airline a on f.airline_id = a.airline_id
+where fs.monday = 1 and 
+	time(fs.departure) between '10:00' and '10:15'
+order by fs.departure;
 
 -- --------------------------------------------------------------------------
 -- 6. What are the flights that arrive between 20:00 and 20:15 and are not
@@ -102,16 +101,17 @@ order by fs.departure;
 --    List the following columns:
 --    | Flight Number | Departure Time | Arrival Time | Airline | Wednesday | Thursday |
 --- ------------------------------------------------------------------------------------------
-SELECT fs.flightno AS 'Flight Number'
-, fs.departure AS 'Departure Time'
-, fs.arrival AS 'Arrival Time'
-, a.airlinename AS 'Airline'
-, fs.wednesday AS 'Wednesday'
-, fs.thursday AS 'Thursday'
-FROM flight AS f
-JOIN flightschedule AS fs
-	ON f.flightno = fs.flightno
-JOIN airline AS a
-	ON f.airline_id = a.airline_id
-WHERE (TIME(fs.departure) Between '15:00' AND '16:00') AND (TIME(fs.arrival) Between '18:00' AND '21:00') AND (fs.wednesday = 1 OR fs.thursday = 1) AND (a.airlinename != 'Cyprus Airlines')
-ORDER BY fs.departure;- ------------------------------------------------------------------------------------------
+select fs.flightno as 'Flight Number',
+	fs.departure as 'Departure Time',
+	fs.arrival as 'Arrival Time',
+	a.airlinename as 'Airline',
+	fs.wednesday as 'Wednesday',
+	fs.thursday as 'Thursday'
+from flight f
+join flightschedule as fs on f.flightno = fs.flightno
+join airline a on f.airline_id = a.airline_id
+where (TIME(fs.departure) between '15:00' and '16:00') 
+	and (TIME(fs.arrival) between '18:00' and '21:00') 
+    and (fs.wednesday = 1 or fs.thursday = 1) 
+    and (a.airlinename != 'Cyprus Airlines')
+order by fs.departure;
