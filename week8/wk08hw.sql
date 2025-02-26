@@ -48,7 +48,18 @@ where ap.identifier like('%747%');
 --    Columns will look like the following:
 --    | Flight Number | Departure Date | Passenger Name | Price | Rounded Price | Floored Price |
 -- -------------------------------------------------------------------------------------------------
-
+select f.flightno as 'Flight Number',
+	date_format(f.departure, '%b %d, %Y %H:%M:%S') as 'Departure Date',
+    concat(p.firstname, ' ', p.lastname) as 'Passenger Name',
+	concat('$', b.price) as 'Price',
+    concat('$', round(b.price)) as 'Rounded Price',
+    concat('$', floor(b.price)) as 'Floored Price '
+from flight f
+join booking b on b.flight_id = f.flight_id
+join passenger p on p.passenger_id = b.passenger_id
+where f.flightno = 'AF1837' 
+	and f.departure like '2015-06-01%'
+order by b.price desc;
 
 -- -------------------------------------------------------------------------------------------------
 -- 5. Find all flights that have a duration of 20 hours or more. 
@@ -59,7 +70,7 @@ where ap.identifier like('%747%');
 --    Columns will look like the following:
 --    | Departure Date | Arrival Date | Duration in Hours | Duration in Days | Years Since Flight |
 -- -------------------------------------------------------------------------------------------------
-
+select 
 
 -- -------------------------------------------------------------------------
 -- 6. Assign a row number to each passenger for flight number: AL9073.
