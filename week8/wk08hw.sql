@@ -1,8 +1,8 @@
 -- Background:
--- You have been hired by BYU-I Air to help sort through the airportdb database. 
--- Each week you will receive a file from your manager with questions that 
--- need answered by writing queries against the database. 
--- This week your manager wants you to get familiar with functions. 
+-- You have been hired by BYU-I Air to help sort through the airportdb database.
+-- Each week you will receive a file from your manager with questions that
+-- need answered by writing queries against the database.
+-- This week your manager wants you to get familiar with functions.
 
 -- week 8 questions
 USE airportdb;
@@ -57,12 +57,12 @@ select f.flightno as 'Flight Number',
 from flight f
 join booking b on b.flight_id = f.flight_id
 join passenger p on p.passenger_id = b.passenger_id
-where f.flightno = 'AF1837' 
+where f.flightno = 'AF1837'
 	and f.departure like '2015-06-01%'
 order by b.price desc;
 
 -- -------------------------------------------------------------------------------------------------
--- 5. Find all flights that have a duration of 20 hours or more. 
+-- 5. Find all flights that have a duration of 20 hours or more.
 --    Show hours, how many days and how many years since the flight (Use FLOOR).
 --    Sort them by longest flight first.
 --    Format the dates to look like: Feb 28, 2015 3:00:00 PM
@@ -70,7 +70,16 @@ order by b.price desc;
 --    Columns will look like the following:
 --    | Departure Date | Arrival Date | Duration in Hours | Duration in Days | Years Since Flight |
 -- -------------------------------------------------------------------------------------------------
-select 
+-- NOT DONE YET ---- !
+select strftime('%b %d, %Y %H:%M:%S', f.departure) as 'Departure Date',
+    strftime('%b %d, %Y %H:%M:%S', f.arrival) as 'Arrival Date',
+    cast((julianday(f.arrival) - julianday(f.departure)) * 24 as integer) as 'Duration in Hours',
+    floor((julianday(f.arrival) - julianday(f.departure))) as 'Duration in Days',
+    floor((julianday('now') - julianday(f.departure)) / 365.25) as 'Years Since Flight'
+from flight f
+where (julianday(f.arrival) - julianday(f.departure)) * 24 >= 20
+order by 'Duration in Hours' desc
+limit 10;
 
 -- -------------------------------------------------------------------------
 -- 6. Assign a row number to each passenger for flight number: AL9073.
@@ -78,3 +87,12 @@ select
 --    Your columns will look like the following:
 --    | Flight Number | Passenger Name | Row Number |
 -- -------------------------------------------------------------------------
+-- NOT DONE YET ---- !
+select f.flight_number as "Flight Number",
+    p.first_name || ' ' || p.last_name as "Passenger Name",
+    @row_num := @row_num + 1 as "Row Number"
+from booking b
+join passenger p on b.passenger_id = p.passenger_id
+join flight f on b.flight_id = f.flight_id,
+    (select @row_num := 0) as r
+where f.flight_id = 93;
