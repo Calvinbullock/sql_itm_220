@@ -92,4 +92,4 @@ SELECT f.flightno AS "Flight Number",
 FROM booking b
 JOIN passenger p ON b.passenger_id = p.passenger_id
 JOIN flight f ON b.flight_id = f.flight_id
-WHERE f.flight_id = 93;
+where f.flight_id = 93;
