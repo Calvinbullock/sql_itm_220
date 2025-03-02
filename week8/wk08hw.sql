@@ -70,11 +70,10 @@ order by b.price desc;
 --    Columns will look like the following:
 --    | Departure Date | Arrival Date | Duration in Hours | Duration in Days | Years Since Flight |
 -- -------------------------------------------------------------------------------------------------
--- NOT DONE YET ---- !
-select strftime('%b %d, %Y %H:%M:%S', f.departure) as 'Departure Date',
-    strftime('%b %d, %Y %H:%M:%S', f.arrival) as 'Arrival Date',
-    cast((julianday(f.arrival) - julianday(f.departure)) * 24 as integer) as 'Duration in Hours',
-    floor((julianday(f.arrival) - julianday(f.departure))) as 'Duration in Days',
+select date_format(f.departure, '%b %d, %Y %H:%M:%S') as 'Departure Date',
+    date_format(f.departure, '%b %d, %Y %H:%M:%S') as 'Arrival Date',
+    cast((f.arrival - f.departure)) as 'Duration in Hours',
+    floor((f.arrival - f.departure)) as 'Duration in Days',
     floor((julianday('now') - julianday(f.departure)) / 365.25) as 'Years Since Flight'
 from flight f
 where (julianday(f.arrival) - julianday(f.departure)) * 24 >= 20
