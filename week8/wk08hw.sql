@@ -79,18 +79,17 @@ from flight f
 where timestampdiff(hour, f.departure, f.arrival) >= 20
 order by timestampdiff(hour, f.departure, f.arrival) desc
 limit 10;
+
 -- -------------------------------------------------------------------------
 -- 6. Assign a row number to each passenger for flight number: AL9073.
 --    The flight_id is 93.
 --    Your columns will look like the following:
 --    | Flight Number | Passenger Name | Row Number |
 -- -------------------------------------------------------------------------
--- NOT DONE YET ---- !
-select f.flight_number as "Flight Number",
-    p.first_name || ' ' || p.last_name as "Passenger Name",
-    @row_num := @row_num + 1 as "Row Number"
-from booking b
-join passenger p on b.passenger_id = p.passenger_id
-join flight f on b.flight_id = f.flight_id,
-    (select @row_num := 0) as r
-where f.flight_id = 93;
+SELECT f.flight_number AS "Flight Number",
+    CONCAT(p.first_name, ' ', p.last_name) AS "Passenger Name",
+    ROW_NUMBER() OVER (ORDER BY p.last_name) AS "Row Number"
+FROM booking b
+JOIN passenger p ON b.passenger_id = p.passenger_id
+JOIN flight f ON b.flight_id = f.flight_id
+WHERE f.flight_id = 93;
