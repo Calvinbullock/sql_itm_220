@@ -86,9 +86,9 @@ limit 10;
 --    Your columns will look like the following:
 --    | Flight Number | Passenger Name | Row Number |
 -- -------------------------------------------------------------------------
-SELECT f.flight_number AS "Flight Number",
-    CONCAT(p.first_name, ' ', p.last_name) AS "Passenger Name",
-    ROW_NUMBER() OVER (ORDER BY p.last_name) AS "Row Number"
+SELECT f.flightno AS "Flight Number",
+    CONCAT(p.firstname, ' ', p.lastname) AS "Passenger Name",
+    ROW_NUMBER() OVER (ORDER BY p.lastname) AS "Row Number"
 FROM booking b
 JOIN passenger p ON b.passenger_id = p.passenger_id
 JOIN flight f ON b.flight_id = f.flight_id
