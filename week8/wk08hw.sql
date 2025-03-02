@@ -70,16 +70,15 @@ order by b.price desc;
 --    Columns will look like the following:
 --    | Departure Date | Arrival Date | Duration in Hours | Duration in Days | Years Since Flight |
 -- -------------------------------------------------------------------------------------------------
-select date_format(f.departure, '%b %d, %Y %H:%M:%S') as 'Departure Date',
-    date_format(f.departure, '%b %d, %Y %H:%M:%S') as 'Arrival Date',
-    cast((f.arrival - f.departure)) as 'Duration in Hours',
-    floor((f.arrival - f.departure)) as 'Duration in Days',
-    floor((julianday('now') - julianday(f.departure)) / 365.25) as 'Years Since Flight'
+select date_format(f.departure, '%b %d, %Y %H:%i:%s') as 'Departure Date',
+    date_format(f.arrival, '%b %d, %Y %H:%i:%s') as 'Arrival Date',
+    timestampdiff(hour, f.departure, f.arrival) as 'Duration in Hours',
+    floor(timestampdiff(hour, f.departure, f.arrival) / 24) as 'Duration in Days',
+    floor(timestampdiff(year, f.departure, now())) as 'Years Since Flight'
 from flight f
-where (julianday(f.arrival) - julianday(f.departure)) * 24 >= 20
-order by 'Duration in Hours' desc
+where timestampdiff(hour, f.departure, f.arrival) >= 20
+order by timestampdiff(hour, f.departure, f.arrival) desc
 limit 10;
-
 -- -------------------------------------------------------------------------
 -- 6. Assign a row number to each passenger for flight number: AL9073.
 --    The flight_id is 93.
