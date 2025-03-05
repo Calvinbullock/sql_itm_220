@@ -14,7 +14,16 @@ USE airportdb;
 --    The columns should look like the following:
 --    | Flight Number | From | To | Departure Date | Arrival Date |
 -- ---------------------------------------------------------------------------
-
+select f.flightno as 'Flight Number',
+	concat(ag.city, ' ', ag.country) as 'From', -- this needs to use the f.from
+	concat(ag.city, ' ', ag.country) as 'To',   -- this needs to use the f.to
+	f.departure as 'Departure Date',		 -- formate date
+	f.arrival as 'Arrival Date'
+from flight f
+	join airline al on al.base_airport = f.from
+	join aiport ap on ap.iata = al.iata
+	join airport_geo ag on ag.name = ap.name
+where f.flight = 'AL9073';
 
 -- ---------------------------------------------------------------------------
 -- 2. How many passengers are on flight AL9073 (flight id #93)?
