@@ -41,7 +41,7 @@ select f.flightno as 'Flight Number',
 	ap.capacity as 'Plane Capacity',
 	'Original # of Passengers', -- Count flight_id occurances in booking??
 	'Seats Remaining',
-	'Full Flight # of Passengers',
+    ap.capacity as'Full Flight # of Passengers',
 	'Seats Remaining'
 from flight f
 	-- city / country location joins
