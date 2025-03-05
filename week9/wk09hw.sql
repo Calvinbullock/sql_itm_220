@@ -1,8 +1,8 @@
 -- Background:
--- You have been hired by BYU-I Air to help sort through the airportdb database. 
--- Each week you will receive a file from your manager with questions that 
--- need answered by writing queries against the database. 
--- This week your manager wants you to understand case statements. 
+-- You have been hired by BYU-I Air to help sort through the airportdb database.
+-- Each week you will receive a file from your manager with questions that
+-- need answered by writing queries against the database.
+-- This week your manager wants you to understand case statements.
 
 -- week 9 questions
 USE airportdb;
@@ -17,8 +17,8 @@ USE airportdb;
 select f.flightno as 'Flight Number',
 	concat(ag.city, ' ', ag.country) as 'From', -- this needs to use the f.from
 	concat(ag.city, ' ', ag.country) as 'To',   -- this needs to use the f.to
-	f.departure as 'Departure Date',		 -- formate date
-	f.arrival as 'Arrival Date'
+    date_format(f.departure, '%b %d, %Y %h:%i %p') AS 'Departure Date',
+    date_format(f.arrival, '%b %d, %Y %h:%i %p') AS 'Arrival Date'
 from flight f
 	join airline al on al.base_airport = f.from
 	join aiport ap on ap.iata = al.iata
