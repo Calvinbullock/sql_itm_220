@@ -35,6 +35,15 @@ where f.flight_id = '93';
 --    The columns should look like the following:
 --    | Flight Number | From | To | Plane Capacity | Original # of Passengers | Seats Remaining | Full Flight # of Passengers | Seats Remaining |
 -- ---------------------------------------------------------------------------
+select f.flightno as 'Flight Number',
+	concat(ag1.city, ' ', ag1.country) as 'From',
+	concat(ag2.city, ' ', ag2.country) as 'To',
+	'Plane Capacity',
+	'Original # of Passengers',
+	'Seats Remaining',
+	'Full Flight # of Passengers',
+	'Seats Remaining'
+from
 
 
 -- -------------------------------------------------------------------------------------
