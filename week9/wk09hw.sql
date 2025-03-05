@@ -38,12 +38,21 @@ where f.flight_id = '93';
 select f.flightno as 'Flight Number',
 	concat(ag1.city, ' ', ag1.country) as 'From',
 	concat(ag2.city, ' ', ag2.country) as 'To',
-	'Plane Capacity',
-	'Original # of Passengers',
+	ap.capacity as 'Plane Capacity',
+	'Original # of Passengers', -- Count flight_id occurances in booking??
 	'Seats Remaining',
 	'Full Flight # of Passengers',
 	'Seats Remaining'
-from
+from flight f
+	-- city / country location joins
+	join airport a1 on a1.airport_id = f.from
+	join airport a2 on a2.airport_id = f.to
+    join airport_geo ag1 on ag1.airport_id = a1.airport_id
+    join airport_geo ag2 on ag2.airport_id = a2.airport_id
+	-- plane details joins
+    join airplane ap on ap.airplane_id = f.ap.airplane_id
+where f.flight_id = '93';
+
 
 
 -- -------------------------------------------------------------------------------------
