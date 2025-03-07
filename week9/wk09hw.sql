@@ -71,7 +71,7 @@ where f.flight_id = '93'
 --    The columns should look like the following:
 --    | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday | Total |
 -- -------------------------------------------------------------------------------------
--- TODO: not done
+-- TODO: the nums are not right, should be mostly in the hundreads but in the thousands...
 select sum(case when dayofweek(f.departure) = 2 then 1 else 0 end) as monday,
     sum(case when dayofweek(f.departure) = 3 then 1 else 0 end) as tuesday,
     sum(case when dayofweek(f.departure) = 4 then 1 else 0 end) as wednesday,
