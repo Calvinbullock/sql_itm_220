@@ -41,16 +41,14 @@ select f.flightno as 'Flight Number',
 	ap.capacity as 'Plane Capacity',
 	count(b.passenger_id) as 'Original # of Passengers',
 	case
-		-- when ap.capacity - count(b.passenger_id) < 50
         when ap.capacity > count(b.passenger_id)
-		then concate(ap.capacity - count(b.passenger_id), ' ', 'seats left')
+		then concat(ap.capacity - count(b.passenger_id), ' ', 'seats left')
         else 'full flight'
      end as 'Seats Remaining',
     ap.capacity as 'Full Flight # of Passengers',
 	case
-		-- when ap.capacity - count(b.passenger_id) < 50
-        when ap.capacity > count(b.passenger_id)
-		then concate(ap.capacity - count(b.passenger_id), ' ', 'seats left')
+        when ap.capacity > count(b.passenger_id) + 25
+		then concat(ap.capacity - count(b.passenger_id), ' ', 'seats left')
         else 'full flight'
      end as 'Seats Remaining'
 from flight f
