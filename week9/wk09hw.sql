@@ -39,10 +39,20 @@ select f.flightno as 'Flight Number',
 	concat(ag1.city, ' ', ag1.country) as 'From',
 	concat(ag2.city, ' ', ag2.country) as 'To',
 	ap.capacity as 'Plane Capacity',
-	'Original # of Passengers', -- Count flight_id occurances in booking??
-	'Seats Remaining',
-    ap.capacity as'Full Flight # of Passengers',
-	'Seats Remaining'
+	count(b.passenger_id) as 'Original # of Passengers',
+	case
+		-- when ap.capacity - count(b.passenger_id) < 50
+        when ap.capacity > count(b.passenger_id)
+		then concate(ap.capacity - count(b.passenger_id), ' ', 'seats left')
+        else 'full flight'
+     end as 'Seats Remaining',
+    ap.capacity as 'Full Flight # of Passengers',
+	case
+		-- when ap.capacity - count(b.passenger_id) < 50
+        when ap.capacity > count(b.passenger_id)
+		then concate(ap.capacity - count(b.passenger_id), ' ', 'seats left')
+        else 'full flight'
+     end as 'Seats Remaining'
 from flight f
 	-- city / country location joins
 	join airport a1 on a1.airport_id = f.from
@@ -50,8 +60,11 @@ from flight f
     join airport_geo ag1 on ag1.airport_id = a1.airport_id
     join airport_geo ag2 on ag2.airport_id = a2.airport_id
 	-- plane details joins
-    join airplane ap on ap.airplane_id = f.ap.airplane_id
-where f.flight_id = '93';
+    join airplane ap on ap.airplane_id = f.airplane_id
+    -- count seats
+    join booking b on b.flight_id = f.flight_id
+where f.flight_id = '93' 
+	and f.flightno = 'AL9073';
 
 -- -------------------------------------------------------------------------------------
 -- 3. How many flights are on each day that are contained within the U.S.?
