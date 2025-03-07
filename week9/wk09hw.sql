@@ -72,19 +72,24 @@ where f.flight_id = '93'
 --    | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday | Total |
 -- -------------------------------------------------------------------------------------
 -- TODO: not done
-select sum(case when dayofweek(departure_time) = 2 then 1 else 0 end) as monday,
-    sum(case when dayofweek(departure_time) = 3 then 1 else 0 end) as tuesday,
-    sum(case when dayofweek(departure_time) = 4 then 1 else 0 end) as wednesday,
-    sum(case when dayofweek(departure_time) = 5 then 1 else 0 end) as thursday,
-    sum(case when dayofweek(departure_time) = 6 then 1 else 0 end) as friday,
-    sum(case when dayofweek(departure_time) = 7 then 1 else 0 end) as saturday,
-    sum(case when dayofweek(departure_time) = 1 then 1 else 0 end) as sunday,
+select sum(case when dayofweek(f.departure) = 2 then 1 else 0 end) as monday,
+    sum(case when dayofweek(f.departure) = 3 then 1 else 0 end) as tuesday,
+    sum(case when dayofweek(f.departure) = 4 then 1 else 0 end) as wednesday,
+    sum(case when dayofweek(f.departure) = 5 then 1 else 0 end) as thursday,
+    sum(case when dayofweek(f.departure) = 6 then 1 else 0 end) as friday,
+    sum(case when dayofweek(f.departure) = 7 then 1 else 0 end) as saturday,
+    sum(case when dayofweek(f.departure) = 1 then 1 else 0 end) as sunday,
     count(*) as total
-from flights f
-    join airports dep_airport on f.departure_airport = dep_airport.airport_code
-    join airports arr_airport on f.arrival_airport = arr_airport.airport_code
-where dep_airport.country = 'United States'
-    and arr_airport.country = 'United States';
+from flight f
+	-- city / country location joins
+	-- 1
+    join airport a1 on a1.airport_id = f.from
+    join airport_geo ag1 on ag1.airport_id = a1.airport_id
+    -- 2
+    join airport a2 on a2.airport_id = f.to
+    join airport_geo ag2 on ag2.airport_id = a2.airport_id
+where ag1.country = 'United States'
+    and ag2.country = 'United States';
 
 -- ---------------------------------------------------------------------------
 --    YOU MAY NEED TO RUN THIS QUERY FROM THE TERMINAL TO VERIFY THAT IT WORKS
