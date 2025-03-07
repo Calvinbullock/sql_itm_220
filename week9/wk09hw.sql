@@ -26,8 +26,7 @@ from flight f
     join airport_geo ag2 on ag2.airport_id = a2.airport_id
 where f.flight_id = '93';
 
--- ---------------------------------------------------------------------------
--- 2. How many passengers are on flight AL9073 (flight id #93)?
+-- --------------------------------------------------------------------------- 2. How many passengers are on flight AL9073 (flight id #93)?
 --    Tell me whether or not the flight is full.
 --    Code an example with seats available and when it is full
 --    This should be done in one query.
@@ -53,8 +52,6 @@ from flight f
     join airplane ap on ap.airplane_id = f.ap.airplane_id
 where f.flight_id = '93';
 
-
-
 -- -------------------------------------------------------------------------------------
 -- 3. How many flights are on each day that are contained within the U.S.?
 --    These flights depart from a city in the U.S. and arrives at a U.S. city
@@ -62,7 +59,19 @@ where f.flight_id = '93';
 --    The columns should look like the following:
 --    | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday | Total |
 -- -------------------------------------------------------------------------------------
-
+select sum(case when dayofweek(departure_time) = 2 then 1 else 0 end) as monday,
+    sum(case when dayofweek(departure_time) = 3 then 1 else 0 end) as tuesday,
+    sum(case when dayofweek(departure_time) = 4 then 1 else 0 end) as wednesday,
+    sum(case when dayofweek(departure_time) = 5 then 1 else 0 end) as thursday,
+    sum(case when dayofweek(departure_time) = 6 then 1 else 0 end) as friday,
+    sum(case when dayofweek(departure_time) = 7 then 1 else 0 end) as saturday,
+    sum(case when dayofweek(departure_time) = 1 then 1 else 0 end) as sunday,
+    count(*) as total
+from flights f
+    join airports dep_airport on f.departure_airport = dep_airport.airport_code
+    join airports arr_airport on f.arrival_airport = arr_airport.airport_code
+where dep_airport.country = 'United States'
+    and arr_airport.country = 'United States';
 
 -- ---------------------------------------------------------------------------
 --    YOU MAY NEED TO RUN THIS QUERY FROM THE TERMINAL TO VERIFY THAT IT WORKS
@@ -77,4 +86,21 @@ where f.flight_id = '93';
 --    The columns should look like the following:
 --    | Flight Number | From | To | Activity | Number of Passengers |
 -- ---------------------------------------------------------------------------
+select f.flight_no as `Flight Number`,
+    dep_airport.city as `From`,
+    arr_airport.city as `To`,
+    case
+        when count(p.passenger_id) >= 10000 then 'High Activity'
+        when count(p.passenger_id) >= 5000 then 'Moderate Activity'
+        when count(p.passenger_id) >= 1000 then 'Low Activity'
+        else 'Very Low Activity'
+    end as `Activity`,
+    count(p.passenger_id) as `Number of Passengers`
+from flights f
+    join airports dep_airport on f.departure_airport = dep_airport.airport_code
+    join airports arr_airport on f.arrival_airport = arr_airport.airport_code
+    join passengers p on f.flight_id = p.flight_id
+where dep_airport.country = 'United States' and arr_airport.country = 'United States'
+group by f.flight_no, dep_airport.city, arr_airport.city
+order by `Number of Passengers` desc;
 
