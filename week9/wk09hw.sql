@@ -26,7 +26,8 @@ from flight f
     join airport_geo ag2 on ag2.airport_id = a2.airport_id
 where f.flight_id = '93';
 
--- --------------------------------------------------------------------------- 2. How many passengers are on flight AL9073 (flight id #93)?
+-- ---------------------------------------------------------------------------
+-- 2. How many passengers are on flight AL9073 (flight id #93)?
 --    Tell me whether or not the flight is full.
 --    Code an example with seats available and when it is full
 --    This should be done in one query.
@@ -59,6 +60,7 @@ where f.flight_id = '93';
 --    The columns should look like the following:
 --    | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday | Total |
 -- -------------------------------------------------------------------------------------
+-- TODO: not done
 select sum(case when dayofweek(departure_time) = 2 then 1 else 0 end) as monday,
     sum(case when dayofweek(departure_time) = 3 then 1 else 0 end) as tuesday,
     sum(case when dayofweek(departure_time) = 4 then 1 else 0 end) as wednesday,
@@ -86,6 +88,7 @@ where dep_airport.country = 'United States'
 --    The columns should look like the following:
 --    | Flight Number | From | To | Activity | Number of Passengers |
 -- ---------------------------------------------------------------------------
+-- TODO: not done
 select f.flight_no as `Flight Number`,
     dep_airport.city as `From`,
     arr_airport.city as `To`,
