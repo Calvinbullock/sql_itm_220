@@ -61,7 +61,7 @@ from flight f
     join airplane ap on ap.airplane_id = f.airplane_id
     -- count seats
     join booking b on b.flight_id = f.flight_id
-where f.flight_id = '93' 
+where f.flight_id = '93'
 	and f.flightno = 'AL9073';
 
 -- -------------------------------------------------------------------------------------
@@ -105,9 +105,9 @@ where ag1.country = 'United States'
 --    | Flight Number | From | To | Activity | Number of Passengers |
 -- ---------------------------------------------------------------------------
 -- TODO: not done
-select f.flight_no as `Flight Number`,
-    dep_airport.city as `From`,
-    arr_airport.city as `To`,
+select f.flightno as `Flight Number`,
+	concat(ag1.city, ' ', ag1.country) as 'From',
+	concat(ag2.city, ' ', ag2.country) as 'To',
     case
         when count(p.passenger_id) >= 10000 then 'High Activity'
         when count(p.passenger_id) >= 5000 then 'Moderate Activity'
@@ -116,10 +116,15 @@ select f.flight_no as `Flight Number`,
     end as `Activity`,
     count(p.passenger_id) as `Number of Passengers`
 from flights f
-    join airports dep_airport on f.departure_airport = dep_airport.airport_code
-    join airports arr_airport on f.arrival_airport = arr_airport.airport_code
+	-- city / country location joins
+	join airport a1 on a1.airport_id = f.from
+	join airport a2 on a2.airport_id = f.to
+    join airport_geo ag1 on ag1.airport_id = a1.airport_id
+    join airport_geo ag2 on ag2.airport_id = a2.airport_id
+    -- passenger count
     join passengers p on f.flight_id = p.flight_id
-where dep_airport.country = 'United States' and arr_airport.country = 'United States'
-group by f.flight_no, dep_airport.city, arr_airport.city
+where ag1.country = 'United States'
+    and ag2.country = 'United States'
+group by f.flight_no, ag1.city, ag2.city
 order by `Number of Passengers` desc;
 
