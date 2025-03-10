@@ -10,7 +10,7 @@
                 WHEN condition THEN # ELSE # (Condition is usually a number or string value. Can also contain calculations)
                END AS 'Alias 3' -- ALWAYS use an alias with CASE contitions
     FROM       table1 t1   -- t1 and t2 are table aliases
-    INNER JOIN table2 t2   
+    INNER JOIN table2 t2
     ON         t1.table1_id = t2.table1_id -- PK and FK might not always be the same name
     WHERE      column_name = condition
     ORDER BY   column_name (DESC)
@@ -19,7 +19,7 @@
 */
 
 /*
-    The CASE clause is the "IF" statement of SQL. 
+    The CASE clause is the "IF" statement of SQL.
     It allows us to match conditions and set results based on the condition met.
     This is useful for the following reasons:
         * In one column we can have a different result returned based on the condition
@@ -36,7 +36,7 @@
         --
         SELECT  c.customer_id
         ,       CONCAT(c.first_name, ' ', c.last_name) AS customer_name
-        ,       CASE 
+        ,       CASE
                 WHEN c.active = 1 THEN 'Active'
                 ELSE 'Inactive'
                 END AS status
@@ -48,8 +48,8 @@
 USE sakila;
 
 -- ---------------------------------------------------------------------------
--- 1. Rewrite the following query, which uses a simple CASE expression, 
--- so that the same results are achieved using a searched CASE expression. 
+-- 1. Rewrite the following query, which uses a simple CASE expression,
+-- so that the same results are achieved using a searched CASE expression.
 -- Try to use as few WHEN clauses as possible.
 SELECT  name
 ,       CASE name
@@ -88,8 +88,8 @@ SELECT name,
 FROM language;
 
 -- ---------------------------------------------------------------------------
--- 2. Rewrite the following query so that the result set contains 
--- a single row with five columns (one for each rating). 
+-- 2. Rewrite the following query so that the result set contains
+-- a single row with five columns (one for each rating).
 -- Name the five columns (G, PG, PG_13, R, and NC_17).
 SELECT   rating
 ,        COUNT(*)
@@ -127,19 +127,19 @@ SELECT
 FROM film;
 
 -- ---------------------------------------------------------------------------
--- 3. Write a query that returns the alphabetized first letter 
--- of the customer's last name and the count of active and inactive customers. 
--- Limit the results to only those first letters that occur in the 
+-- 3. Write a query that returns the alphabetized first letter
+-- of the customer's last name and the count of active and inactive customers.
+-- Limit the results to only those first letters that occur in the
 -- last_name column of the customer table.
 
 -- Label the columns as follows:
 
 -- starts_with is the first column and the first letter of the customer's last_name.
 
--- active_count is the second column and the count of active customers 
+-- active_count is the second column and the count of active customers
 --              (as defined in the textbook examples of Chapter 11).
 
--- inactive_count is the third column and the count of inactive customers 
+-- inactive_count is the third column and the count of inactive customers
 --                (as defined in the textbook examples of Chapter 11).
 
 -- The output should look like the following:
@@ -181,21 +181,21 @@ GROUP BY SUBSTRING(last_name, 1,1)
 ORDER BY SUBSTRING(last_name, 1,1);
 
 -- ---------------------------------------------------------------------------
--- 4. Write a query that returns the alphabetized first letter 
+-- 4. Write a query that returns the alphabetized first letter
 -- of the customer's last name and the count of active and inactive customers.
--- DO NOT limit the results to only those first letters that occur 
--- in the last_name column of the customer table but 
--- return results that include any missing letters from the data set. 
--- (HINT: You will need to fabricate a table composed of the 26 letters 
+-- DO NOT limit the results to only those first letters that occur
+-- in the last_name column of the customer table but
+-- return results that include any missing letters from the data set.
+-- (HINT: You will need to fabricate a table composed of the 26 letters
 -- of the alphabet and use an outer join to resolve this problem.)
 
 -- Label the columns as follows:
 
 -- starts_with is the first column and the first letter of the customer's last_name.
 
--- active_count is the second column and the count of active customers 
+-- active_count is the second column and the count of active customers
 --              (as defined in the textbook examples of Chapter 11).
--- inactive_count is the third column and the count of inactive customers 
+-- inactive_count is the third column and the count of inactive customers
 --                (as defined in the textbook examples of Chapter 11).
 
 -- The output should look like the following:
@@ -293,16 +293,16 @@ GROUP BY l.letter
 ORDER BY 1;
 
 -- ---------------------------------------------------------------------------
--- 5. Write a query that returns the alphabetized first letter 
--- of the customer's last name and the count of active and inactive customers 
+-- 5. Write a query that returns the alphabetized first letter
+-- of the customer's last name and the count of active and inactive customers
 -- for only those letters where the count of active customers is greater than 30.
 
 -- Label the columns as follows:
 
 -- starts_with is the first column and the first letter of the customer's last_name.
--- active_count is the second column and the count of active customers 
+-- active_count is the second column and the count of active customers
 --              (as defined in the textbook examples of Chapter 11).
--- inactive_count is the third column and the count of inactive customers 
+-- inactive_count is the third column and the count of inactive customers
 --                (as defined in the textbook examples of Chapter 11).
 
 -- The output should look like the following:
@@ -354,7 +354,7 @@ ORDER BY 1;
 
 -- ------------------------------------------------------------------------------------------
 -- 3. Show the titles of all films. Include the rental_duration column too.
---    Add an additional column to classify the rental duration 
+--    Add an additional column to classify the rental duration
 --    according to the following rules:
 --    * If the rental_duration is less than 4 days, label it as 'Short Term'
 --    * If the rental_duration is beween 4 and 7 days, label it as 'Standard Term'
