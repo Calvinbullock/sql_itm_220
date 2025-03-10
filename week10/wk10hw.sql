@@ -1,8 +1,8 @@
 -- Background:
--- You have been hired by BYU-I Air to help sort through the airportdb database. 
--- Each week you will receive a file from your manager with questions that 
--- need answered by writing queries against the database. 
--- This week your manager wants you to understand left joins. 
+-- You have been hired by BYU-I Air to help sort through the airportdb database.
+-- Each week you will receive a file from your manager with questions that
+-- need answered by writing queries against the database.
+-- This week your manager wants you to understand left joins.
 
 -- week 10 questions
 USE airportdb;
@@ -11,7 +11,7 @@ USE airportdb;
 -- 1. Who are our frequent fliers that reside in the U.K. and have flown
 --    somewhere in the world from the U.K.?
 --    We want to see all passengers regardless of whether they have flown.
---    Show their status as 'Platinum', 'Gold', 'Silver', or 'No Status' 
+--    Show their status as 'Platinum', 'Gold', 'Silver', or 'No Status'
 --    based on the number of flights they have taken.
 --    The conditions are as follows
 --    - Platinum: 30 or more flights
