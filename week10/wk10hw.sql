@@ -25,8 +25,27 @@ USE airportdb;
 --    The columns should look like the following:
 --    | Status | Number of Flights | First Name | Last Name |
 -- ---------------------------------------------------------------------------
-
-
+select
+    case
+        when count(b.passenger_id) >= 30 then 'platinum'
+        when count(b.passenger_id) >= 20 then 'gold'
+        when count(b.passenger_id) >= 10 then 'silver'
+        else 'no status'
+    end as "status",
+    count(b.passenger_id) as 'number of flights',
+    p.firstname as 'first name',
+    p.lastname as 'last name'
+from passengerdetails pd
+left join passenger p on pd.passenger_id = p.passenger_id
+left join booking b on p.passenger_id = b.passenger_id
+left join flight f on b.flight_id = f.flight_id
+left join flightschedule fs on f.flightno = fs.flightno
+left join airport a_from on fs.from = a_from.airport_id
+left join airport a_to on fs.to = a_to.airport_id
+where pd.country = 'u.k.'
+    and (a_from.iata = 'lhr' or a_from.iata = 'man' or a_from.iata = 'edi' or a_from.iata = 'gla' or a_from.iata = 'lgw')
+group by p.passenger_id, p.firstname, p.lastname
+order by count(b.passenger_id) desc;
 -- --------------------------------------------------------------
 -- 2. Who in the 'no status' section from the previous query
 --    have never flown?
