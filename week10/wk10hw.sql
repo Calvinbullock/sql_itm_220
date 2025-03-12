@@ -25,11 +25,12 @@ USE airportdb;
 --    The columns should look like the following:
 --    | Status | Number of Flights | First Name | Last Name |
 -- ---------------------------------------------------------------------------
+-- TODO: this returns partial results
 select
     case
         when count(b.passenger_id) >= 30 then 'platinum'
-        when count(b.passenger_id) >= 20 then 'gold'
-        when count(b.passenger_id) >= 10 then 'silver'
+		when count(b.passenger_id) >= 20 and count(b.passenger_id) < 30 then 'gold'
+        when count(b.passenger_id) >= 10 and count(b.passenger_id) < 20 then 'silver'
         else 'no status'
     end as "status",
     count(b.passenger_id) as 'number of flights',
@@ -40,11 +41,11 @@ from passengerdetails pd
 	left join booking b on p.passenger_id = b.passenger_id
 	left join flight f on b.flight_id = f.flight_id
 	left join airport a_from on f.from = a_from.airport_id
-	left join airport a_to on f.to = a_to.airport_id
-where pd.country = 'u.k.' and (a_from.iata = 'lhr'
-    or a_from.iata = 'man' or a_from.iata = 'edi'
-    or a_from.iata = 'gla' or a_from.iata = 'lgw')
-group by p.passenger_id, p.firstname, p.lastname
+    left join airport_geo ag on ag.airport_id = a_from.airport_id
+where (pd.country = 'UNITED KINGDOM' and ag.country = 'UNITED KINGDOM') 
+	or (pd.passenger_id is null and pd.country is null)
+    or (pd.passenger_id is null and pd.country = 'UNITED KINGDOM')
+group by p.passenger_id, p.firstname, p.lastname, month(f.departure)
 order by count(b.passenger_id) desc;
 
 -- --------------------------------------------------------------
