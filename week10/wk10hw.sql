@@ -25,7 +25,6 @@ USE airportdb;
 --    The columns should look like the following:
 --    | Status | Number of Flights | First Name | Last Name |
 -- ---------------------------------------------------------------------------
--- TODO: this returns partial results
 select
     case
         when count(b.passenger_id) >= 30 then 'platinum'
@@ -42,7 +41,7 @@ from passengerdetails pd
 	left join flight f on b.flight_id = f.flight_id
 	left join airport a_from on f.from = a_from.airport_id
     left join airport_geo ag on ag.airport_id = a_from.airport_id
-where (pd.country = 'UNITED KINGDOM' and ag.country = 'UNITED KINGDOM') 
+where (pd.country = 'UNITED KINGDOM' and ag.country = 'UNITED KINGDOM')
 	or (pd.passenger_id is null and pd.country is null)
     or (pd.passenger_id is null and pd.country = 'UNITED KINGDOM')
 group by p.passenger_id, p.firstname, p.lastname, month(f.departure)
