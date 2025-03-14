@@ -53,7 +53,7 @@ order by count(b.passenger_id) desc;
 --    Columns will look like the following:
 --    | Status | Number of Flights | First Name | Last Name |
 -- --------------------------------------------------------------
--- TODO: maybe done not tested yet
+-- TODO: not done
 select
     case
         when count(b.passenger_id) >= 30 then 'platinum'
@@ -64,18 +64,17 @@ select
     count(b.passenger_id) as 'number of flights',
     p.firstname as 'first name',
     p.lastname as 'last name'
-from passengerdetails pd
-left join passenger p on pd.passenger_id = p.passenger_id
+from passenger p
+left join passengerdetails pd on pd.passenger_id = p.passenger_id
 left join booking b on p.passenger_id = b.passenger_id
 left join flight f on b.flight_id = f.flight_id
 left join airport a_from on f.from = a_from.airport_id
 left join airport_geo ag on ag.airport_id = a_from.airport_id
 where (pd.country = 'UNITED KINGDOM' and ag.country = 'UNITED KINGDOM')
-	or (pd.passenger_id is null and pd.country is null)
-    or (pd.passenger_id is null and pd.country = 'UNITED KINGDOM')
-    and 'status' = 'no status'
-group by p.passenger_id, p.firstname, p.lastname
-having COUNT(b.passenger_id) = 0
+	or (b.passenger_id is null and pd.country is null)
+    or (b.passenger_id is null and pd.country = 'UNITED KINGDOM')
+group by p.firstname, p.lastname, month(f.departure)
+having `status` = 'no status' and `number of flights` = 0
 order by count(b.passenger_id) desc;
 
 -- --------------------------------------------------------------------------------
@@ -83,7 +82,6 @@ order by count(b.passenger_id) desc;
 --    passenger details table?
 --    | Status | Number of Flights | First Name | Last Name | Passenger Country |
 -- --------------------------------------------------------------------------------
--- TODO: maybe done not tested yet
 select
     case
         when count(b.passenger_id) >= 30 then 'platinum'
@@ -94,13 +92,13 @@ select
     count(b.passenger_id) as 'number of flights',
     p.firstname as 'first name',
     p.lastname as 'last name'
-    pd.country as "passenger country"
-from passengerdetails pd
-left join passenger p on pd.passenger_id = p.passenger_id
+from passenger p
+left join passengerdetails pd on pd.passenger_id = p.passenger_id
 left join booking b on p.passenger_id = b.passenger_id
 left join flight f on b.flight_id = f.flight_id
-where b.passenger_id is null and pd.passenger_id is null;
-
-
-
-
+left join airport a_from on f.from = a_from.airport_id
+left join airport_geo ag on ag.airport_id = a_from.airport_id
+where (b.passenger_id is null and pd.country is null)
+group by p.firstname, p.lastname, month(f.departure)
+having `status` = 'no status'
+order by count(b.passenger_id) desc;
