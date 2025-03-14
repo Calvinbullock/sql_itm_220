@@ -53,7 +53,6 @@ order by count(b.passenger_id) desc;
 --    Columns will look like the following:
 --    | Status | Number of Flights | First Name | Last Name |
 -- --------------------------------------------------------------
--- TODO: not done
 select
     case
         when count(b.passenger_id) >= 30 then 'platinum'
