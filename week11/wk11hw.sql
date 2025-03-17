@@ -10,9 +10,23 @@ USE airportdb;
 -- ---------------------------------------------------------------------------
 -- 1. What is the earliest and latest flight that departs from the U.K.?
 --    The columns should look like the following:
---    | Earliest Departure | Latest Departure | From | To |
+-- how many months of data do we have for those flights?
+--    | Earliest Departure | Latest Departure | Number of Months | From | To |
 -- ---------------------------------------------------------------------------
-
+select min(f.departure) as 'Earliest Departure', 
+	max(f.departure) as 'Latest Departure', 
+    -- as 'Number of Months', TODO:
+	ag1.country as 'From',
+	ag2.county as 'To'
+from flight f
+	-- from
+	join airport a1 on f.from = a1.airport_id
+    join airport_geo ag1 on a1.airport_id = ag1.airport_id
+    -- to
+    join airport a2 on f.to = a2.airport_id
+    join airport_geo ag2 on a2.airport_id = ag2.airport_id
+where ag1.country = 'United Kingdom'
+group by f.to, f.from;
 
 -- ---------------------------------------------------------------------------------
 -- 2. What is the total number of passengers that are on a flight
