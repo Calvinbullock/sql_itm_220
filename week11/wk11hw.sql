@@ -16,8 +16,8 @@ USE airportdb;
 select min(f.departure) as 'Earliest Departure', 
 	max(f.departure) as 'Latest Departure', 
     -- as 'Number of Months', TODO:
-	ag1.country as 'From',
-	ag2.county as 'To'
+	concat(ag1.city, ' ', ag1.country) as 'From',
+	concat(ag2.city, ' ', ag2.country) as 'To'
 from flight f
 	-- from
 	join airport a1 on f.from = a1.airport_id
