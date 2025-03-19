@@ -60,7 +60,20 @@ order by f.departure;
 --    The columns should look like the following:
 --    | Total Revenue | From | To | Flight Number |
 -- ---------------------------------------------------------------------------------
-select 
+select concat('$', format(sum(b.price), 'C')) as 'Total Revenue',
+	concat(ag1.city, ' ', ag1.country) as 'From',
+	concat(ag2.city, ' ', ag2.country) as 'To',
+    f.flightno as 'Flight Number'
+from flight f
+	join booking b on b.flight_id = f.flight_id
+	-- from
+	join airport a1 on f.from = a1.airport_id
+    join airport_geo ag1 on a1.airport_id = ag1.airport_id
+    -- to
+    join airport a2 on f.to = a2.airport_id
+    join airport_geo ag2 on a2.airport_id = ag2.airport_id
+where ag1.country = 'United Kingdom' and ag2.country = 'United Kingdom'
+group by f.from, f.to, f.flightno;
 
 -- ---------------------------------------------------------------------------------
 -- 4. What is the average revenue above $250 generated from flights within the U.K.?
