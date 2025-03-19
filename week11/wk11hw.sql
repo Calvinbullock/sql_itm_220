@@ -1,20 +1,20 @@
 -- Background:
--- You have been hired by BYU-I Air to help sort through the airportdb database. 
--- Each week you will receive a file from your manager with questions that 
--- need answered by writing queries against the database. 
--- This week your manager wants you to understand the possibilities of using aggregate functions. 
+-- You have been hired by BYU-I Air to help sort through the airportdb database.
+-- Each week you will receive a file from your manager with questions that
+-- need answered by writing queries against the database.
+-- This week your manager wants you to understand the possibilities of using aggregate functions.
 
 -- week 11 questions
 USE airportdb;
 
 -- ---------------------------------------------------------------------------
--- 1. What is the earliest and latest flight that departs from the U.K.?
+-- 1. What are the earliest and latest flights that depart from the U.K.?
+--    How many months of data do we have for those flights?
 --    The columns should look like the following:
--- how many months of data do we have for those flights?
 --    | Earliest Departure | Latest Departure | Number of Months | From | To |
 -- ---------------------------------------------------------------------------
-select min(f.departure) as 'Earliest Departure', 
-	max(f.departure) as 'Latest Departure', 
+select min(f.departure) as 'Earliest Departure',
+	max(f.departure) as 'Latest Departure',
     -- as 'Number of Months', TODO:
 	concat(ag1.city, ' ', ag1.country) as 'From',
 	concat(ag2.city, ' ', ag2.country) as 'To'
