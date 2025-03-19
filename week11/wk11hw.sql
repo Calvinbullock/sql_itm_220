@@ -82,7 +82,21 @@ group by f.from, f.to, f.flightno;
 --    The columns should look like the following:
 --    | Average Revenue | From | To | Flight Number |
 -- ---------------------------------------------------------------------------------
-
+select concat('$', format(avg(b.price), 'C')) as 'Average Revenue',
+	concat(ag1.city, ' ', ag1.country) as 'From',
+	concat(ag2.city, ' ', ag2.country) as 'To',
+    f.flightno as 'Flight Number'
+from flight f
+	join booking b on b.flight_id = f.flight_id
+	-- from
+	join airport a1 on f.from = a1.airport_id
+    join airport_geo ag1 on a1.airport_id = ag1.airport_id
+    -- to
+    join airport a2 on f.to = a2.airport_id
+    join airport_geo ag2 on a2.airport_id = ag2.airport_id
+where ag1.country = 'United Kingdom' and ag2.country = 'United Kingdom'
+group by f.from, f.to, f.flightno
+having avg(b.price) > 250;
 
 -- ---------------------------------------------------------------------------------------------------------
 -- 5. List the number of passengers each flight serviced within the U.S.
