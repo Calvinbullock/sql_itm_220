@@ -115,3 +115,26 @@ having avg(b.price) > 250;
 --    The columns should look like the following:
 --    | Flight Number | From | To | Activity | Number of Passengers | Total Revenue | Average Revenue |
 -- ---------------------------------------------------------------------------------------------------------
+select f.flightno as 'Flight Number',
+	concat(ag1.city, ' ', ag1.country) as 'From',
+	concat(ag2.city, ' ', ag2.country) as 'To',
+	CASE
+        WHEN count(b.passenger_id) >= 10000 THEN 'High Activity'
+        WHEN count(b.passenger_id) >= 5000 THEN 'Moderate Activity'
+        WHEN count(b.passenger_id) >= 1000 THEN 'Low Activity'
+        ELSE 'Very Low Activity'
+    END as 'Activity',
+    SUM(b.passenger_id) AS 'Number of Passengers',
+    concat('$', format(sum(b.price), 'C')) as 'Total Revenue',
+    concat('$', format(avg(b.price), 'C')) as 'Average Revenue'
+from flight f
+	join booking b on b.flight_id = f.flight_id
+	-- from
+	join airport a1 on f.from = a1.airport_id
+    join airport_geo ag1 on a1.airport_id = ag1.airport_id
+    -- to
+    join airport a2 on f.to = a2.airport_id
+    join airport_geo ag2 on a2.airport_id = ag2.airport_id
+where ag1.country = 'United States' and ag2.country = 'United States'
+group by concat(ag1.city, ' ', ag1.country), 
+	concat(ag2.city, ' ', ag2.country), f.flightno;
