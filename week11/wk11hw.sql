@@ -37,7 +37,7 @@ group by concat(ag1.city, ' ', ag1.country), concat(ag2.city, ' ', ag2.country);
 select count(b.passenger_id) as "Total Number of Passengers",
 	concat(ag1.city, ' ', ag1.country) as 'From',
 	concat(ag2.city, ' ', ag2.country) as 'To',
-    f.departure as 'Departure Date', 
+    f.departure as 'Departure Date',
     f.flightno as 'Flight Number'
 from flight f
 	join booking b on b.flight_id = f.flight_id
@@ -48,11 +48,11 @@ from flight f
     join airport a2 on f.to = a2.airport_id
     join airport_geo ag2 on a2.airport_id = ag2.airport_id
 where ag1.country = 'United Kingdom' and ag2.country = 'United Kingdom'
-group by concat(ag1.city, ' ', ag1.country), 
+group by concat(ag1.city, ' ', ag1.country),
 	concat(ag2.city, ' ', ag2.country),
     f.departure, f.flightno
 order by f.departure;
-    
+
 -- ---------------------------------------------------------------------------------
 -- 3. What is the total revenue generated from flights within the U.K.?
 --    Format the revenue with a dollar sign, comma at the thousands place and
@@ -136,6 +136,6 @@ from flight f
     join airport a2 on f.to = a2.airport_id
     join airport_geo ag2 on a2.airport_id = ag2.airport_id
 where ag1.country = 'United States' and ag2.country = 'United States'
-group by concat(ag1.city, ' ', ag1.country), 
+group by concat(ag1.city, ' ', ag1.country),
 	concat(ag2.city, ' ', ag2.country), f.flightno
 order by count(b.passenger_id) desc;
