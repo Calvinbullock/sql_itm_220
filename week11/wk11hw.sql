@@ -137,4 +137,5 @@ from flight f
     join airport_geo ag2 on a2.airport_id = ag2.airport_id
 where ag1.country = 'United States' and ag2.country = 'United States'
 group by concat(ag1.city, ' ', ag1.country), 
-	concat(ag2.city, ' ', ag2.country), f.flightno;
+	concat(ag2.city, ' ', ag2.country), f.flightno
+order by count(b.passenger_id) desc;
