@@ -15,17 +15,17 @@ USE airportdb;
 --    The columns should look like the following:
 --    | Status | Number of Flights | First Name | Last Name | Departure Month |
 -- ---------------------------------------------------------------------------------
-create view passengerrewards_view as
+create or replace view passengerrewards_view as
 select
     case
         when count(b.passenger_id) >= 30 then 'platinum'
         when count(b.passenger_id) >= 20 and count(b.passenger_id) < 30 then 'gold'
         when count(b.passenger_id) >= 10 and count(b.passenger_id) < 20 then 'silver'
-        else 'no status'
+        else 'no_status'
     end as "status",
-    count(b.passenger_id) as 'number of flights',
-    p.firstname as 'first name',
-    p.lastname as 'last name'
+    count(b.passenger_id) as 'number_of_flights',
+    p.firstname as 'first_name',
+    p.lastname as 'last_name'
 from passengerdetails pd
 left join passenger p on pd.passenger_id = p.passenger_id
 left join booking b on p.passenger_id = b.passenger_id
@@ -38,16 +38,19 @@ where (pd.country = 'UNITED KINGDOM' and ag.country = 'UNITED KINGDOM')
 group by p.passenger_id, p.firstname, p.lastname, month(f.departure)
 order by count(b.passenger_id) desc;
 
+-- drop table if needed
+drop table if exists passengerrewards;
+
 -- create new table
-create table passengerrewards_view as
+create table passengerrewards as
 select * from passengerrewards_view;
 
 -- Query statement for new table
-select pr.Status,
-    pr.`Number of Flights`,
-    pr.FirstName,
-    pr.LastName,
-    pr.`Departure Month`
+select pr.status,
+    pr.number_of_flights,
+    pr.first_name,
+    pr.last_name
+    -- Departure Month -- TODO: THIS NEEDS TO BE ADDED
 from passengerrewards pr;
 
 -- --------------------------------------------------------------------------------------------------------
