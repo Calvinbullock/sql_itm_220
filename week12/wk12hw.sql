@@ -1,21 +1,54 @@
 -- Background:
--- You have been hired by BYU-I Air to help sort through the airportdb database. 
--- Each week you will receive a file from your manager with questions that 
--- need answered by writing queries against the database. 
--- This week your manager wants you to understand what views and CTE expressions are. 
+-- You have been hired by BYU-I Air to help sort through the airportdb database.
+-- Each week you will receive a file from your manager with questions that
+-- need answered by writing queries against the database.
+-- This week your manager wants you to understand what views and CTE expressions are.
 
 -- week 12 questions
 USE airportdb;
 
 -- ---------------------------------------------------------------------------------
--- 1. Create a view from week 10 question 1 named passengerrewards_view. 
---    Make a table based on that view named `passengerrewards`. 
+-- 1. Create a view from week 10 question 1 named passengerrewards_view.
+--    Make a table based on that view named `passengerrewards`.
 --    Provide a select statement that queries the table.
 --    DO NOT use a select * statement.
 --    The columns should look like the following:
 --    | Status | Number of Flights | First Name | Last Name | Departure Month |
 -- ---------------------------------------------------------------------------------
+create view passengerrewards_view as
+select
+    case
+        when count(b.passenger_id) >= 30 then 'platinum'
+        when count(b.passenger_id) >= 20 and count(b.passenger_id) < 30 then 'gold'
+        when count(b.passenger_id) >= 10 and count(b.passenger_id) < 20 then 'silver'
+        else 'no status'
+    end as "status",
+    count(b.passenger_id) as 'number of flights',
+    p.firstname as 'first name',
+    p.lastname as 'last name'
+from passengerdetails pd
+left join passenger p on pd.passenger_id = p.passenger_id
+left join booking b on p.passenger_id = b.passenger_id
+left join flight f on b.flight_id = f.flight_id
+left join airport a_from on f.from = a_from.airport_id
+left join airport_geo ag on ag.airport_id = a_from.airport_id
+where (pd.country = 'UNITED KINGDOM' and ag.country = 'UNITED KINGDOM')
+    or (pd.passenger_id is null and pd.country is null)
+    or (pd.passenger_id is null and pd.country = 'UNITED KINGDOM')
+group by p.passenger_id, p.firstname, p.lastname, month(f.departure)
+order by count(b.passenger_id) desc;
 
+-- create new table
+create table passengerrewards_view as
+select * from passengerrewards_view;
+
+-- Query statement for new table
+select pr.Status,
+    pr.`Number of Flights`,
+    pr.FirstName,
+    pr.LastName,
+    pr.`Departure Month`
+from passengerrewards pr;
 
 -- --------------------------------------------------------------------------------------------------------
 -- 2. What are the top 10 airports that handled the highest number of flights in August?
