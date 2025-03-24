@@ -50,7 +50,7 @@ select pr.status,
     pr.number_of_flights,
     pr.first_name,
     pr.last_name
-    -- Departure Month -- TODO: THIS NEEDS TO BE ADDED
+    -- Departure Month -- TODO: THIS NEEDS TO BE ADDED??
 from passengerrewards pr;
 
 -- --------------------------------------------------------------------------------------------------------
@@ -59,8 +59,11 @@ from passengerrewards pr;
 --    Columns will look like the following:
 --    | Airport | Flight Count |
 -- --------------------------------------------------------------------------------------------------------
-
-
+with flight_counts as (
+	select __ as Airport
+		__ as 'Flight Count'
+	from 
+)
 -- --------------------------------------------------------------------------------------------------------
 -- 3. What are the top 5 longest flights by duration for each airline?
 --    Don't include any duplicates.
