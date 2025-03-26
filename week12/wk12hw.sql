@@ -68,7 +68,7 @@ with flight_counts as (
     group by a.name
     order by `Flight Count` desc
 )
-select * 
+select *
 from flight_counts
 limit 10;
 
