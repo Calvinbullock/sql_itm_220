@@ -60,10 +60,18 @@ from passengerrewards pr;
 --    | Airport | Flight Count |
 -- --------------------------------------------------------------------------------------------------------
 with flight_counts as (
-	select __ as Airport
-		__ as 'Flight Count'
-	from 
+	select a.name as Airport,
+		count(f.from) as 'Flight Count'
+	from airport a
+    join flight f on a.airport_id = f.from
+    where month(f.departure) = '8'
+    group by a.name
+    order by `Flight Count` desc
 )
+select * 
+from flight_counts
+limit 10;
+
 -- --------------------------------------------------------------------------------------------------------
 -- 3. What are the top 5 longest flights by duration for each airline?
 --    Don't include any duplicates.
@@ -72,3 +80,20 @@ with flight_counts as (
 --    Columns will look like the following:
 --    | Airline | Flight Number | Origin Airport | Destination Airport | Flight Duration (Minutes) |
 -- --------------------------------------------------------------------------------------------------------
+
+-- with ranked_flights as ()
+select al.airlinename as Airline,
+	f.flightno as 'Flight Number',
+	a1.name as 'Origin Airport',
+	a2.name as 'Destination Airport',
+	timestampdiff(MINUTE, f.departure, f.arrival) as 'Flight Duration (Minutes)',
+    DENSE_RANK() OVER (PARTITION BY al.airlinename ORDER BY (SELECT duration_minutes) DESC) AS 'rank'
+from flight f
+join airline al on al.airline_id = f.airline_id
+join airport a1 on a1.airport_id = f.from
+join airport a2 on a2.airport_id = f.to
+order by name, rank
+
+
+
+
