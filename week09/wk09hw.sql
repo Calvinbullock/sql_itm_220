@@ -79,7 +79,7 @@ select sum(case when dayofweek(f.departure) = 2 then 1 else 0 end) as monday,
     sum(case when dayofweek(f.departure) = 6 then 1 else 0 end) as friday,
     sum(case when dayofweek(f.departure) = 7 then 1 else 0 end) as saturday,
     sum(case when dayofweek(f.departure) = 1 then 1 else 0 end) as sunday,
-    count(*) as total
+    count(`monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`) as total
 from flight f
 	-- city / country location joins
 	-- 1

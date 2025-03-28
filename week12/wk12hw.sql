@@ -66,10 +66,10 @@ with flight_counts as (
     join flight f on a.airport_id = f.from
     where month(f.departure) = '8'
     group by a.name
-    order by `Flight Count` desc
 )
 select *
 from flight_counts
+order by `Flight Count` desc
 limit 10;
 
 -- --------------------------------------------------------------------------------------------------------
@@ -80,20 +80,26 @@ limit 10;
 --    Columns will look like the following:
 --    | Airline | Flight Number | Origin Airport | Destination Airport | Flight Duration (Minutes) |
 -- --------------------------------------------------------------------------------------------------------
-
--- with ranked_flights as ()
-select al.airlinename as Airline,
-	f.flightno as 'Flight Number',
-	a1.name as 'Origin Airport',
-	a2.name as 'Destination Airport',
-	timestampdiff(MINUTE, f.departure, f.arrival) as 'Flight Duration (Minutes)',
-    DENSE_RANK() OVER (PARTITION BY al.airlinename ORDER BY (SELECT duration_minutes) DESC) AS 'rank'
-from flight f
-join airline al on al.airline_id = f.airline_id
-join airport a1 on a1.airport_id = f.from
-join airport a2 on a2.airport_id = f.to
-order by name, rank
-
+with ranked_flights as (
+	select distinct al.airlinename as Airline,
+		f.flightno as 'Flight_Number',
+		a1.name as 'Origin_Airport',
+		a2.name as 'Destination_Airport',
+		timestampdiff(MINUTE, f.departure, f.arrival) as 'Flight_Duration_(Minutes)',
+		DENSE_RANK() OVER (PARTITION BY al.airlinename ORDER BY (SELECT 'Flight_Duration_(Minutes)') DESC) AS 'rank'
+	from flight f
+	join airline al on al.airline_id = f.airline_id
+	join airport a1 on a1.airport_id = f.from
+	join airport a2 on a2.airport_id = f.to
+)
+select rf.Airline as Airline,
+		rf.Flight_Number as 'Flight Number',
+		rf.Origin_Airport as 'Origin Airport',
+		rf.Destination_Airport as 'Destination Airport',
+		rf.`Flight_Duration_(Minutes)` as 'Flight Duration (Minutes)'
+from ranked_flights rf
+where rf.rank <= 5
+order by rf.Airline, rf.Origin_Airport, rf.rank;
 
 
 
