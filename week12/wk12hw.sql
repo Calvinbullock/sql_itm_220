@@ -80,6 +80,7 @@ limit 10;
 --    Columns will look like the following:
 --    | Airline | Flight Number | Origin Airport | Destination Airport | Flight Duration (Minutes) |
 -- --------------------------------------------------------------------------------------------------------
+-- YOU said the code is right but the output is out of order
 with ranked_flights as (
 	select distinct al.airlinename as Airline,
 		f.flightno as 'Flight_Number',
